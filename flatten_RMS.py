@@ -3,18 +3,26 @@
 
 import pdb
 import argparse
-from pysndfile import PySndfile
+from pysndfile import sndio
 
 from pathtype import PathType
 import csv
+import pandas as pd
 
 def flattenRMS(AudioFile, AnnotationFile):
     with open(AnnotationFile, 'r') as f:
-        csvReader = csv.reader(f)
-        lines = []
-        for line in csvReader:
-            lines.append(line)
-        pdb.set_trace()
+        csvData = pd.read_csv(f)
+    data, fs, encStr, fmtStr = sndio.read(AudioFile, return_format=True)
+    csvData['start'] *= fs
+    csvData['stop'] *= fs
+    # get silent sections
+    csvData.loc[csvData['name'] == '#']
+    pdb.set_trace()
+
+
+    #for line in lines[1:]:
+
+
 
 
 if __name__ == "__main__":
